@@ -15,6 +15,7 @@ module.exports = function(grunt) {
             img: '<%= project.app %>/img',
             js: '<%= project.app %>/js',
             less: '<%= project.src %>/less',
+            scss: '<%= project.src %>/scss',
             srcImg: '<%= project.src %>/img',
             srcJs: '<%= project.src %>/js',
         },
@@ -61,6 +62,17 @@ module.exports = function(grunt) {
                 }],
             },
         },
+        sass: {
+            options: {
+                sourceMap: true,
+                outputStyle: 'compressed'
+            },
+            dist: {
+                files: {
+                    '<%= project.css %>/style.css': '<%= project.scss %>/style.scss'
+                }
+            }
+        },
         less: {
             options: {
                 // cleancss: true, // unfortunately cleancss strips out the sourcemap comment!
@@ -82,9 +94,17 @@ module.exports = function(grunt) {
                 files: ['<%= project.srcJs %>/**/*.js', '<%= project.src %>/react/*.jsx'],
                 tasks: ['browserify:dist']
             },
-            css: {
+            less: {
                 files: '<%= project.less %>/**/*.less',
                 tasks: ['less']
+            },
+            img: {
+                files: '<%= project.srcImg %>/**/*.{png,jpg,gif}',
+                tasks: ['imagemin']
+            },
+            sass: {
+                files: '<%= project.scss %>/**/*.scss',
+                tasks: ['sass']
             },
             livereload: {
                 // get live reload at
@@ -108,7 +128,8 @@ module.exports = function(grunt) {
     require('matchdep').filter('grunt-*').forEach(grunt.loadNpmTasks);
 
     grunt.registerTask('js', ['jshint', 'browserify:dist']);
-    grunt.registerTask('css', ['less']);
+    //grunt.registerTask('css', ['less']);
+    grunt.registerTask('css', ['sass']);
     grunt.registerTask('img', ['imagemin']);
     grunt.registerTask('build', ['copy:main', 'js', 'css', 'img']);
 };
