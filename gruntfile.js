@@ -106,6 +106,10 @@ module.exports = function(grunt) {
                 files: '<%= project.scss %>/**/*.scss',
                 tasks: ['sass']
             },
+            copy: {
+                files: '<%= project.src %>/index.html',
+                tasks: ['copy']
+            },
             livereload: {
                 // get live reload at
                 // https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei
